@@ -8,6 +8,7 @@ import { FavoriteChangedEventArgs } from './favorite/favorite.component';
 })
 
 export class AppComponent {
+  
   title: string;
   post = {
     title: "Title",
@@ -29,12 +30,6 @@ export class AppComponent {
 
   // for ngSwitchCases
   viewMode = 'somethingElse';
-
-  courses = [
-    { id: 1, name: 'course1 '},
-    { id: 2, name: 'course2 '},
-    { id: 3, name: 'course3 '},
-  ]
   
   // ngFor and Change Detection
   onAdd() {
@@ -48,6 +43,28 @@ export class AppComponent {
 
   onChange(course) {
     course.name = 'UPDATED';
+  }
+
+  // ngFor and TrackBy
+
+  courses = [];
+  loadCourses() {
+    this.courses = [
+      { id: 1, name: 'course1 '},
+      { id: 2, name: 'course2 '},
+      { id: 3, name: 'course3 '},
+    ]
+  }
+
+  trackCourse(index, course) {
+    return course ? course.is : undefined;
+  }
+
+  task = {
+    title: 'Review applciations',
+    assignee: {
+      name: 'John Smith'
+    }
   }
 
 }

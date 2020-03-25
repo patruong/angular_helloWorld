@@ -1,5 +1,54 @@
 <h1>Angular</h1>
 
+
+<!-- New course form  -->
+TEST
+<new-course-form></new-course-form>
+
+<br/>
+<br/>
+
+<!-- Building a Basic Bootstrap Form -->
+
+<contact-form></contact-form>
+
+<br/>
+<br/>
+
+
+<!-- Zippy -->
+<zippy title="Shipping Details">
+    Shipping Details Content
+</zippy>
+
+<br/>
+<br/>
+
+
+<!-- Creating Custom Directives -->
+
+<input type="text" [appInputFormat]="'uppercase'">
+
+<br/>
+<br/>
+
+<!-- Safe Traversal Ops -->
+<span>{{ task.assignee?.name }} </span>
+
+<br/>
+<br/>
+
+<!-- ngFor and TrackBy - for performance programming! -->
+
+<button (click)="loadCourses()">Load Courses</button>
+
+
+<ul>
+    <li *ngFor="let course of courses; trackBy: trackCourse">
+        {{ course.name }}
+    </li>
+</ul>
+<br/>
 <!-- ngFor and Change Detection -->
 <button (click)="onAdd()">Add</button>
 
@@ -10,8 +59,8 @@
         {{i}} - {{ course.name }}
         <button (click)="onChange(course)">Remove</button>
     </li>
-    
 </ul>
+<br/>
 
 <ul>
     <li *ngFor="let course of courses; even as isEven">
@@ -81,7 +130,6 @@
 
 <!--<img [src]="imageUrl"/>-->
 <!--<button (click)="onClick()"></button>-->
-
 
 
 
