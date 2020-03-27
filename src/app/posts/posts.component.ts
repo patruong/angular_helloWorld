@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { PostService } from '../services/post.service';
+import { BadInput } from '../common/bad-input';
+import { AppError } from '../common/app-error';
+import { NotFoundError } from '../common/not-found-error';
 
 @Component({
   selector: 'posts',
@@ -7,28 +10,61 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./posts.component.css']
 })
 
-export class PostsComponent {
+export class PostsComponent implements OnInit {
   posts: any;
 
-  private url = 'http://jsonplaceholder.typicode.com/posts';
+  constructor(private service: PostService) {
+  }
 
-  constructor(private http: HttpClient) {
-    http.get(this.url)
-      .subscribe(response => {
-        this.posts = response;
-      });
+  ngOnInit() {
+    this.service.getAll()
+      .subscribe(
+        response => {
+          this.posts = response;
+        });
   }
 
   createPost(input: HTMLInputElement) {
     let post = { title: input.value };
     input.value = '';
 
-    this.http.post(this.url, JSON.stringify(post))
-      .subscribe(response => {
-        post['id'] = response; // response.id <-- error at 3 - create data!
-        this.posts.splice(0, 0, post);
-        console.log(response);
-      });
+    this.service.create(post)
+      .subscribe(
+        response => {
+          post['id'] = response; // response.id <-- error at 3 - create data!
+          this.posts.splice(0, 0, post);
+          console.log(response);
+        }, 
+        (error: AppError) => {
+          if (error instanceof BadInput) {
+            //this.form.setErrors(error.originalError);
+          }
+          else throw error;
+          
+        });
   }
 
+  updatePost(post) {
+    this.service.update(post)
+      .subscribe(
+        response => {
+          console.log(response);
+        });
+    //this.http.put(this.url, JSON.stringify(post))
+  }
+
+  deletePost(post) {
+    this.service.delete(post)
+      .subscribe(
+        response => {
+          let index = this.posts.indexOf(post);
+          this.posts.splice(index, 1);
+        }, 
+        (error: AppError) => {
+          if (error instanceof NotFoundError)
+            alert('This post has already been deleted.');
+          else throw error;
+        });
+  }
+  
 }
